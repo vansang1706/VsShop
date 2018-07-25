@@ -1,12 +1,12 @@
-﻿using BethanysPieShop.Models;
-using BethanysPieShop.ViewModels;
+﻿using VsShop.Models;
+using VsShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BethanysPieShop.Components
+namespace VsShop.Components
 {
     public class ShoppingCartSummary : ViewComponent
     {

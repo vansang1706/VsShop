@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BethanysPieShop.Models;
+using VsShop.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BethanysPieShop.Controllers
+namespace VsShop.Controllers
 {
     [Authorize]
     public class FeedbackController : Controller

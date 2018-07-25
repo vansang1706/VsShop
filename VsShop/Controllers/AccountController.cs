@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BethanysPieShop.ViewModels;
+using VsShop.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BethanysPieShop.Controllers
+namespace VsShop.Controllers
 {
     [Authorize]
     public class AccountController : Controller

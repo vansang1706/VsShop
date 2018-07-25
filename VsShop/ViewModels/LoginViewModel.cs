@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BethanysPieShop.ViewModels
+namespace VsShop.ViewModels
 {
     public class LoginViewModel
     {

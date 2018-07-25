@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BethanysPieShop.Models;
-using BethanysPieShop.ViewModels;
+using VsShop.Models;
+using VsShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BethanysPieShop.Controllers
+namespace VsShop.Controllers
 {
     public class ShoppingCartController : Controller
     {

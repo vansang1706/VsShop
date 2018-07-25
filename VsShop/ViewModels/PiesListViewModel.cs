@@ -1,7 +1,7 @@
-﻿using BethanysPieShop.Models;
+﻿using VsShop.Models;
 using System.Collections.Generic;
 
-namespace BethanysPieShop.ViewModels
+namespace VsShop.ViewModels
 {
     public class PiesListViewModel
     {

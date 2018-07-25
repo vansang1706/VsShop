@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace BethanysPieShop.Migrations
+namespace VsShop.Migrations
 {
     public partial class addfeedbackagain : Migration
     {
