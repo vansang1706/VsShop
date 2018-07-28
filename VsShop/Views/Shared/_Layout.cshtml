@@ -1,7 +1,11 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using VsShop.Auth
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
 <!DOCTYPE html>
 
-@inject SignInManager<IdentityUser> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IAuthorizationService AuthorizationService
+@inject UserManager<ApplicationUser> UserManager
 
 <html>
 <head>
@@ -21,6 +25,18 @@
                     <li><a asp-controller="Home" asp-action="Index" class="navbar-brand">Bethany's Pie Shop</a></li>
                     @await Component.InvokeAsync("CategoryMenu")
                     <li><a asp-controller="Feedback" asp-action="Index">Feedback</a></li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a asp-controller="Admin" asp-action="UserManagement">User management</a>
+                                    <a>Role management</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
                     @await Component.InvokeAsync("ShoppingCartSummary")
                 </ul>
                 @if (SignInManager.IsSignedIn(User))
