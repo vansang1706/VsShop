@@ -25,14 +25,14 @@
                     <li><a asp-controller="Home" asp-action="Index" class="navbar-brand">Bethany's Pie Shop</a></li>
                     @await Component.InvokeAsync("CategoryMenu")
                     <li><a asp-controller="Feedback" asp-action="Index">Feedback</a></li>
-                    @if (SignInManager.IsSignedIn(User))
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrators"))
                     {
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a asp-controller="Admin" asp-action="UserManagement">User management</a>
-                                    <a>Role management</a>
+                                    <a asp-controller="Admin" asp-action="RoleManagement">Role management</a>
                                 </li>
                             </ul>
                         </li>
