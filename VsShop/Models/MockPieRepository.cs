@@ -37,5 +37,20 @@ namespace VsShop.Models
         {
             return _pies.FirstOrDefault(a => a.PieId == pieId);
         }
+
+        public void CreatePie(Pie pie)
+        {
+
+        }
+
+        public void UpdatePie(Pie pie)
+        {
+
+        }
+
+        public void DeletePie(int pieID)
+        {
+
+        }
     }
 }

@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using VsShop.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VsShop.Auth;
-using VsShop.ViewModels;
+using System.Security.Claims;
 
 namespace VsShop.Controllers
 {
     [Authorize(Roles = "Administrators")]
+    [Authorize(Policy = "DeletePie")]
     public class AdminController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
@@ -73,22 +76,32 @@ namespace VsShop.Controllers
             {
                 return RedirectToAction("UserManagement");
             }
-
-            return View(user);
+            var claims = await _userManager.GetClaimsAsync(user);
+            var vm = new EditUserViewModel()
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                Country = user.Country,
+                City = user.City,
+                Birthday = user.Birthday,
+                UserClaims = claims.Select(c => c.Value).ToList()
+            };
+            return View(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(string id, ApplicationUser applicationUser)
+        public async Task<IActionResult> EditUser(string id, EditUserViewModel editUserViewModel)
         {
             var user = await _userManager.FindByIdAsync(id);
 
             if (user != null)
             {
-                user.Email = applicationUser.Email;
-                user.UserName = applicationUser.UserName;
-                user.Birthday = applicationUser.Birthday;
-                user.City = applicationUser.City;
-                user.Country = applicationUser.Country;
+                user.Email = editUserViewModel.Email;
+                user.UserName = editUserViewModel.UserName;
+                user.Birthday = editUserViewModel.Birthday;
+                user.City = editUserViewModel.City;
+                user.Country = editUserViewModel.Country;
 
                 var result = await _userManager.UpdateAsync(user); 
 
@@ -294,6 +307,41 @@ namespace VsShop.Controllers
                 ModelState.AddModelError("", error.Description);
             }
             return View(userRoleViewModel);
+        }
+
+        //Claims
+        public async Task<IActionResult> ManageClaimsForUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return RedirectToAction("UserManagement", _userManager.Users);
+
+            var claimsManagementViewModel = new ClaimsManagementViewModel { UserId = user.Id, AllClaimsList = VsShopClaimTypes.ClaimsList };
+
+            return View(claimsManagementViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageClaimsForUser(ClaimsManagementViewModel claimsManagementViewModel)
+        {
+            var user = await _userManager.FindByIdAsync(claimsManagementViewModel.UserId);
+
+            if (user == null)
+                return RedirectToAction("UserManagement", _userManager.Users);
+
+            IdentityUserClaim<string> claim =
+                new IdentityUserClaim<string> { ClaimType = claimsManagementViewModel.ClaimId, ClaimValue = claimsManagementViewModel.ClaimId };
+
+            await _userManager.AddClaimAsync(user, new Claim(claimsManagementViewModel.ClaimId, claimsManagementViewModel.ClaimId));
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return RedirectToAction("UserManagement", _userManager.Users);
+
+            ModelState.AddModelError("", "User not updated, something went wrong.");
+
+            return View(claimsManagementViewModel);
         }
     }
 }

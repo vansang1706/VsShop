@@ -29,5 +29,24 @@ namespace VsShop.Models
         {
             return _appDbContext.Pies.FirstOrDefault(a => a.PieId == pieId);
         }
+
+        public void UpdatePie(Pie pie)
+        {
+            _appDbContext.Pies.Update(pie);
+            _appDbContext.SaveChanges();
+        }
+
+        public void CreatePie(Pie pie)
+        {
+            _appDbContext.Pies.Add(pie);
+            _appDbContext.SaveChanges();
+        }
+
+        public void DeletePie(int pieId)
+        {
+            var pie = _appDbContext.Pies.FirstOrDefault(a => a.PieId == pieId);
+            _appDbContext.Pies.Remove(pie);
+            _appDbContext.SaveChanges();
+        }
     }
 }

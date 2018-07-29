@@ -38,6 +38,15 @@
                         </li>
                     }
                     @await Component.InvokeAsync("ShoppingCartSummary")
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrators"))
+                    {
+                        //@await Component.InvokeAsync("AdminMenu")
+
+                        <li class="dropdown">
+                            <a asp-controller="PieManagement"
+                               asp-action="Index">Pie Management</a>
+                        </li>
+                    }
                 </ul>
                 @if (SignInManager.IsSignedIn(User))
                 {

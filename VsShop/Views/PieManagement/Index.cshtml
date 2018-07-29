@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Pie>
+
+<h2>Pie Management</h2>
+
+@if (!Model.Any())
+{
+    <h3>The shop does not have any pies.</h3>
+
+}
+else
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>Pie ID</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>In stock</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+        @foreach (var pie in Model)
+        {
+            <tr>
+                <td>@pie.PieId</td>
+                <td><img src="@pie.ImageThumbnailUrl" /></td>
+                <td>@pie.Name</td>
+                <td><input type="checkbox" readonly checked="@pie.InStock" /></td>
+                <td>@pie.Price</td>
+                <td>
+                    <form asp-action="DeletePie" asp-route-pieId="@pie.PieId" method="post">
+                        <a asp-action="EditPie" asp-route-pieId="@pie.PieId" class="btn btn-primary">Edit</a>
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Do you really want to delete this pie?');">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </table>
+}
+
+<a class="btn btn-primary" asp-action="AddPie">Add new pie</a>
