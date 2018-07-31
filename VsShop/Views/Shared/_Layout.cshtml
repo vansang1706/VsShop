@@ -1,11 +1,11 @@
 ﻿@using VsShop.Auth
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
-<!DOCTYPE html>
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IAuthorizationService AuthorizationService
 @inject UserManager<ApplicationUser> UserManager
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -40,8 +40,6 @@
                     @await Component.InvokeAsync("ShoppingCartSummary")
                     @if (SignInManager.IsSignedIn(User) && User.IsInRole("Administrators"))
                     {
-                        //@await Component.InvokeAsync("AdminMenu")
-
                         <li class="dropdown">
                             <a asp-controller="PieManagement"
                                asp-action="Index">Pie Management</a>
@@ -64,12 +62,6 @@
                     </ul>
                 }
             </div>
-            @*<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    @await Component.InvokeAsync("ShoppingCartSummary")
-                </ul>
-            </div>*@
-
         </div>
     </nav>
 

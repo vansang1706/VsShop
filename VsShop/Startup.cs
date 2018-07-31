@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VsShop.Auth;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace VsShop
 {

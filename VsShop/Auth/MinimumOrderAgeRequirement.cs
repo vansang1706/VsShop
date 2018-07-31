@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -18,7 +16,7 @@ namespace VsShop.Auth
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumOrderAgeRequirement requirement)
         {
-            if(!context.User.HasClaim(c=>c.Type == ClaimTypes.DateOfBirth))
+            if (!context.User.HasClaim(c => c.Type == ClaimTypes.DateOfBirth))
             {
                 return Task.CompletedTask;
             }

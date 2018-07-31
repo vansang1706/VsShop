@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,7 +8,6 @@ using VsShop.ViewModels;
 namespace VsShop.Controllers
 {
     [Authorize(Roles ="Administrators")]
-   // [Authorize(Policy ="DeletePie")]
     public class PieManagementController : Controller
     {
         private readonly IPieRepository _pieRepository;
