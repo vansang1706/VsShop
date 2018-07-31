@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using VsShop.Auth;
+using System.Security.Claims;
 
 namespace VsShop.Controllers
 {
@@ -23,9 +24,12 @@ namespace VsShop.Controllers
         }
 
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
-            return View();
+            return View(new LoginViewModel
+            {
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost]
@@ -80,6 +84,67 @@ namespace VsShop.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult GoogleLogin(string returnUrl = null)
+        {
+            var redirectUrl = Url.Action("GoogleLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(ExternalLoginServiceConstants.GoogleProvider, redirectUrl);
+            return Challenge(properties, ExternalLoginServiceConstants.GoogleProvider);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleLoginCallback(string returnUrl=null, string serviceError = null)
+        {
+            if (serviceError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {serviceError}");
+            }
+
+            var infor = await _signInManager.GetExternalLoginInfoAsync();
+            if (infor == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(infor.LoginProvider, infor.ProviderKey, true);
+            if (result.Succeeded)
+            {
+                if (returnUrl == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                return Redirect(returnUrl);
+            }
+
+            var user = new ApplicationUser()
+            {
+                Email = infor.Principal.FindFirst(ClaimTypes.Email).Value,
+                UserName = infor.Principal.FindFirst(ClaimTypes.Email).Value
+            };
+
+            var identityResult = await _userManager.CreateAsync(user);
+
+            if (!identityResult.Succeeded) return AccessDenied();
+
+            identityResult = await _userManager.AddLoginAsync(user, infor);
+
+            if (!identityResult.Succeeded) return AccessDenied();
+
+            await _signInManager.SignInAsync(user, false);
+
+            if(returnUrl == null)
+            {
+                return RedirectToAction("index", "home");
+            }
+
+            return Redirect(returnUrl);
         }
     }
 }

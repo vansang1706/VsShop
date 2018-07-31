@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using VsShop.Auth;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace VsShop
 {
@@ -53,7 +54,15 @@ namespace VsShop
                 options.AddPolicy("AdministratorOnly", policy => policy.RequireRole("Administrator"));
                 options.AddPolicy("DeletePie", policy => policy.RequireClaim("Delete Pie", "Delete Pie"));
                 options.AddPolicy("AddPie", policy => policy.RequireClaim("Add Pie", "Add Pie"));
+                options.AddPolicy("MinimumOrderAge", policy => policy.Requirements.Add(new MinimumOrderAgeRequirement(18)));
             });
+
+            services.AddAuthentication()
+                .AddGoogle(o =>
+                {
+                    o.ClientId = "869200922875-cqtmg484llncqtg8bkq6brdngk7mmb0e.apps.googleusercontent.com";
+                    o.ClientSecret = "09PKgyBiJTsmT_tvjTpGEwFf";
+                });
 
             services.AddMemoryCache();
             services.AddSession();
@@ -78,10 +87,17 @@ namespace VsShop
             }
             
             app.UseStaticFiles();
-           
             app.UseAuthentication();
-
             app.UseSession();
+
+
+            // .Net Core 1.0
+            //app.UseGoogleAuthentication(new Microsoft.AspNetCore.Authentication.Google.GoogleOptions
+            //{
+            //    ClientId = "869200922875-cqtmg484llncqtg8bkq6brdngk7mmb0e.apps.googleusercontent.com",
+            //    ClientSecret = "09PKgyBiJTsmT_tvjTpGEwFf"
+            //});
+
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {
