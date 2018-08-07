@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VsShop.Models;
 
 namespace VsShop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180802234149_AddPieReview")]
+    partial class AddPieReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -334,29 +336,6 @@ namespace VsShop.Migrations
                     b.ToTable("Pies");
                 });
 
-            modelBuilder.Entity("VsShop.Models.PieGiftOrder", b =>
-                {
-                    b.Property<int>("PieGiftOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
-                    b.Property<int?>("PieId");
-
-                    b.HasKey("PieGiftOrderId");
-
-                    b.HasIndex("PieId");
-
-                    b.ToTable("PieGiftOrders");
-                });
-
             modelBuilder.Entity("VsShop.Models.PieReview", b =>
                 {
                     b.Property<int>("PieReviewId")
@@ -457,13 +436,6 @@ namespace VsShop.Migrations
                         .WithMany("Pies")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("VsShop.Models.PieGiftOrder", b =>
-                {
-                    b.HasOne("VsShop.Models.Pie", "Pie")
-                        .WithMany()
-                        .HasForeignKey("PieId");
                 });
 
             modelBuilder.Entity("VsShop.Models.PieReview", b =>

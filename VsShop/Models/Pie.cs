@@ -1,4 +1,6 @@
-﻿namespace VsShop.Models
+﻿using System.Collections.Generic;
+
+namespace VsShop.Models
 {
     public class Pie
     {
@@ -14,5 +16,6 @@
         public bool InStock { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
+        public virtual List<PieReview> PieReviews { get; set; }
     }
 }

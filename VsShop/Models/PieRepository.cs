@@ -25,7 +25,7 @@ namespace VsShop.Models
 
         public Pie GetPieById(int pieId)
         {
-            return _appDbContext.Pies.FirstOrDefault(a => a.PieId == pieId);
+            return _appDbContext.Pies.Include(c=>c.PieReviews).FirstOrDefault(a => a.PieId == pieId);
         }
 
         public void UpdatePie(Pie pie)
