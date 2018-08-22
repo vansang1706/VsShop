@@ -69,7 +69,7 @@ namespace VsShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditPie(PieEditViewModel pieEditViewModel)
+        public IActionResult EditPie([Bind("Pie")] PieEditViewModel pieEditViewModel)
         {
             pieEditViewModel.Pie.CategoryId = pieEditViewModel.CategoryId;
 
@@ -82,8 +82,15 @@ namespace VsShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeletePie(string pieId)
+        public IActionResult DeletePie(int pieId)
         {
+            var pie = _pieRepository.GetAllPies().FirstOrDefault(p => p.PieId == pieId);
+
+            if(pie!= null)
+            {
+                _pieRepository.DeletePie(pie.PieId);
+            }
+
             return RedirectToAction("Index");
         }
     }
